@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { PremiumCostButton, ResultButton, StyledPremiusCostText, StyledResultText } from './Result.styles';
 import moment from 'moment';
-
-
-
+import { apiCallCreatePolicy, apiCallPremiumCalculation } from '../../utils/api';
 
 const Resulat = ({setShowBrands}) => {
 
@@ -17,58 +14,22 @@ const Resulat = ({setShowBrands}) => {
   const brandName = useSelector((state) => state.cardContent.brandName);
   const brandModel = useSelector((state) => state.cardContent.brandModel);
 
-  
-
   const [premiumCost, setPremiumCost] = useState('');
-  
-  console.log('startDate picker', startDate);
-  console.log('endDate picker', endDate);
-  console.log('kilometers picker', kilometers);
-  console.log('owners picker', owners);
-  console.log('modelId', modelId);
 
-
-  
-const api = axios.create({
-  baseURL: 'https://test-case.azurewebsites.net/'
-})
-
-
-  const createPolicy = () => {
-
-    api.post(`https://test-case.azurewebsites.net/api/policy`, {
-      "modelId": modelId,
-      "period": {
-        "start": startDate,
-        "end": endDate
-      },
-      "owners": owners,
-      "kilometers": kilometers
-    }, {
-      headers: {
-        'X-Api-Key': 'e993baf3-4e2e-4dbe-a944-f6c41fb1a243'
-      }
-    });
+  async function createPolicy () {
+    await apiCallCreatePolicy(modelId, startDate, endDate, kilometers, owners);
     setShowBrands(false);
   }
 
-  const getPremiumCalculation = () => {
-    api.get(`https://test-case.azurewebsites.net/api/calculator/premium?modelId=${modelId}&period.start=${startDate}&period.end=${endDate}&kilometers=${kilometers}&owners=${owners}`, {
-        headers: {
-          'X-Api-Key': 'e993baf3-4e2e-4dbe-a944-f6c41fb1a243'
-        }
-    }).then(res => {
-        setPremiumCost(res.data)
-      })
+  async function getPremiumCalculation () {
+    const result = await apiCallPremiumCalculation(modelId, startDate, endDate, kilometers, owners);
+    setPremiumCost(result)  
   }
 
   const startdate = new Date(startDate);
   const enddate = new Date(startDate);
   const startDateFormatted = moment(new Date(startdate)).format('YYYY-MM-DD');
   const endDateFormatted = moment(new Date(enddate)).format('YYYY-MM-DD');
-
-  
-
 
   return (
     <>

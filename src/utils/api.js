@@ -1,36 +1,66 @@
-
-
-
-
-  
 import axios from 'axios';
-  
+
+// Replace with apiKey
+const apiKey = process.env.REACT_APP_INSTECH_API_KEY;
 
 const api = axios.create({
-  baseURL: 'https://test-case.azurewebsites.net/'
+  baseURL: 'https://test-case.azurewebsites.net/api'
 })
 
+export async function apiCallGetPolicies() {
+  return await (api.get('/policy?page=0&size=25', {
+    headers: {
+      'X-Api-Key' : apiKey
+    }
+  }).then(res => res.data));
+}
 
-    export const getPolicy = () => {
-    api.get('https://test-case.azurewebsites.net/api/policy?page=0&size=25', {
-      headers: {
-        'X-Api-Key' : 'e993baf3-4e2e-4dbe-a944-f6c41fb1a243'
-      }
-    }).then(res => {
-      console.log(res)
-    })
-  }
+export async function apiCallGetBrands() {
+  return await (api.get('/car/brands', {
+    headers: {
+      'X-Api-Key' : apiKey
+    }
+  }).then(res => res.data));
+}
+
+export async function apiCallPremiumCalculation(modelId, startDate, endDate, kilometers, owners) {
+  return await (api.get(`/calculator/premium?modelId=${modelId}&period.start=${startDate}&period.end=${endDate}&kilometers=${kilometers}&owners=${owners}`, {
+    headers: {
+      'X-Api-Key' : apiKey
+    }
+  }).then(res => res.data));
+}
+
+export async function apiCallCreatePolicy(modelId, startDate, endDate, kilometers, owners) {
+  await (api.post('/policy', {
+    "modelId": modelId,
+    "period": {
+      "start": startDate,
+      "end": endDate
+    },
+    "owners": owners,
+    "kilometers": kilometers
+  }, {
+    headers: {
+      'X-Api-Key': apiKey
+    }
+  }));
+}
+
+export async function apiCallGetBrandModels(brandId) {
+return await (api.get(`/car/models/${brandId}`, {
+    headers: {
+      'X-Api-Key' : apiKey
+    }
+  }).then(res => res.data));
+}
 
 
 
-  // export const createPolicy = async () => {
-  //   let res = await api.post('https://test-case.azurewebsites.net/api/policy', { "modelId": 1, "period": { "start": "2021-03-25T11:23:15.875Z", "end": "2022-03-25T11:23:15.875Z" }, "owners": 10, "kilometers": 50000 },
-  //     { 
-  //       headers: {
-  //         'X-Api-Key': 'e993baf3-4e2e-4dbe-a944-f6c41fb1a243'
-  //       }
-  //     }
-  //   )
-  //   console.log(res);
 
-  // }
+
+
+
+
+
+
