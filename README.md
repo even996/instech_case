@@ -1,13 +1,11 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Instech Case
 
 ## Run the app?
 
-#### Add apikey into utils/api
+## Add apikey into utils/api
 
-### Commands:
+## Commands:
 
-#### npm install
+### npm install
 
-#### npm start
+### npm start
