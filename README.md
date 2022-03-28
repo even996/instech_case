@@ -2,10 +2,11 @@
 
 ## Run the app?
 
-## Add apikey into utils/api
+Add apikey into utils/api
+<br>
 
 ## Commands:
 
-### npm install
+npm install
 
-### npm start
+npm start
